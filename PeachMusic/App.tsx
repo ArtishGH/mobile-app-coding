@@ -1,57 +1,56 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const App = () => {
+function ListenNow() {
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Welcome to AppleMusic</Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.contentText}>
-          This is the home page of finance app
-        </Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Learn More</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Listen Now</Text>
     </View>
   );
-};
+}
+function Browse() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Browse</Text>
+    </View>
+  );
+}
+function Radio() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Radio</Text>
+    </View>
+  );
+}
+function Library() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Library</Text>
+    </View>
+  );
+}
+function Search() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Search</Text>
+    </View>
+  );
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  content: {
-    alignItems: 'center',
-  },
-  contentText: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#3ecdfd',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
+const Tab = createBottomTabNavigator();
 
-export default App;
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Listen Now" component={ListenNow} />
+        <Tab.Screen name="Browse" component={Browse} />
+        <Tab.Screen name="Radio" component={Radio} />
+        <Tab.Screen name="Library" component={Library} />
+        <Tab.Screen name="Search" component={Search} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
