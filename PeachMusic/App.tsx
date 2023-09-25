@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { SearchBar } from '@rneui/themed';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const data = [
@@ -75,7 +74,7 @@ const SearchView = () => {
 
 
 function SearchScreen() {
-  return <SearchView />;
+  return null;
 }
 
 const Tab = createBottomTabNavigator();
