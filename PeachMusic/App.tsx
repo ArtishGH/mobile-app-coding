@@ -1,22 +1,19 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, Text, ScrollView, useColorScheme } from 'react-native';
+import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SearchView } from './Views/SearchView';
 import { GalleryView } from './Views/GalleryView';
 import { data } from './Views/Song';
 import { LibraryView } from './Views/LibraryView';
+import { BrowseView } from './Views/BrowseView'
 
 function ListenNowScreen() {
   return <GalleryView {...{data}} />;
 }
 
 function BrowseScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Browse</Text>
-    </View>
-  );
+  return <BrowseView {...{data}} />;
 }
 
 function RadioScreen() {
@@ -28,9 +25,7 @@ function RadioScreen() {
 }
 
 function LibraryScreen() {
-  return (
-    <LibraryView />
-  );
+  return <LibraryView {...{data}} />;
 }
 
 function SearchScreen() {
@@ -43,8 +38,9 @@ function SearchScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const theme = useColorScheme();
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
       <Tab.Navigator>
         <Tab.Screen name="Listen Now" component={ListenNowScreen} />
         <Tab.Screen name="Browse" component={BrowseScreen} />

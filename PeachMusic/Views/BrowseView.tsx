@@ -2,7 +2,29 @@ import React from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Song, Album } from './Song';
 
-export const GalleryView = ({ data }: { data: (Song | Album)[]; }) => {
+export const BrowseView = ({ data }: { data: (Song | Album)[]; }) => {
+  const sortedDataByViews = [...data].sort((a, b) => {
+    if ('views' in a && 'views' in b) {
+      return b.views - a.views;
+    }
+    return 0;
+  });
+  const sortedDataByDate = [...data].sort((a, b) => {
+    if ('date' in a && 'date' in b) {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+  
+      // Compare the two date objects
+      if (dateA > dateB) {
+        return -1;
+      } else if (dateA < dateB) {
+        return 1;
+      }
+      return 0;
+    }
+    return 0;
+  });
+  
   const renderItem = ({ item }: { item: Song | Album; }) => {
     if ('title' in item) {
       // Render a song
@@ -33,8 +55,9 @@ export const GalleryView = ({ data }: { data: (Song | Album)[]; }) => {
 
   return (
     <View style={{ flex: 1 }}>
+      <ScrollView>
       <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Albums</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>You Gotta Hear</Text>
         <FlatList
           data={albums}
           renderItem={renderItem}
@@ -44,7 +67,7 @@ export const GalleryView = ({ data }: { data: (Song | Album)[]; }) => {
         />
       </View>
       <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Songs</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Read Your Goals</Text>
         <FlatList
           data={songs}
           renderItem={renderItem}
@@ -53,6 +76,28 @@ export const GalleryView = ({ data }: { data: (Song | Album)[]; }) => {
           showsHorizontalScrollIndicator={false}
         />
       </View>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>New Music</Text>
+        <FlatList
+          data={sortedDataByDate}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Daily Top 100s</Text>
+        <FlatList
+          data={sortedDataByViews}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      {/* Best New Songs, similat to what I used in SearchView - Look up in Apple Music */}
+      </ScrollView>
     </View>
   );
 };
