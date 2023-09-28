@@ -142,6 +142,17 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
           ))}
         </ScrollView>
       </View>
+      {/* Here's gonna music based on preference and stuff - Im putting Loved songs here for now */}
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Loved By You</Text>
+        <FlatList
+          data={sortedDataByloved}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
       <View>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>New Music</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} pagingEnabled>
@@ -177,16 +188,6 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Daily Top 100s</Text>
         <FlatList
           data={sortedDataByViews}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Loved By You</Text>
-        <FlatList
-          data={sortedDataByloved}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           horizontal={true}
