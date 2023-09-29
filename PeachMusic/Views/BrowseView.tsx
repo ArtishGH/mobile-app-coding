@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet, Modal, Alert, Pressable } from 'react-native';
 import { Song, Album } from './Song';
 
 export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
@@ -32,10 +32,14 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
   });
 
   const renderItem = ({ item }: { item: Song | Album }) => {
+    const handleModalPress = () => {
+      setModalVisible(!modalVisible);
+    };
+    
     if ('title' in item) {
       // Render a song
       return (
-        <TouchableOpacity style={{ margin: 10 }} onPress={() => console.log('Song selected:', item.title)}>
+        <TouchableOpacity style={{ margin: 10 }} onPress={handleModalPress}>
           <Image source={{ uri: item.image }} style={{ width: 150, height: 150, borderRadius: 10 }} />
           <Text style={{ textAlign: 'left', marginTop: 5 }}>{item.title}</Text>
           <Text style={{ textAlign: 'left', color: 'gray' }}>{item.artist}</Text>
@@ -101,6 +105,8 @@ const groupDataIntoRows = (data: any[], itemsPerRow: number) => {
   return groupedData;
 };
 
+const [modalVisible, setModalVisible] = useState(false);
+
 // Define how many items you want per row for the "New Music" section
 const itemsPerRowForNewMusic = 2; // You can adjust this as needed
 
@@ -141,6 +147,34 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
             </View>
           ))}
         </ScrollView>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Go Back</Text>
+                </Pressable>
+                <FlatList
+                  data={sortedDataByloved}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+          </Modal>
+          {/* <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}>
+            <Text style={styles.textStyle}>Show Modal</Text>
+          </Pressable> */}
+        </View>
       </View>
       {/* Here's gonna music based on preference and stuff - Im putting Loved songs here for now */}
       <View>
@@ -228,7 +262,6 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
           ))}
         </ScrollView>
       </View>
-
     </ScrollView>
   );
 };
@@ -263,6 +296,42 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'gray',
     paddingTop: 10,
+    textAlign: 'center',
+  },
+  // ModalView
+  centeredView: {
+    flex: 1,
+    width: 415,
+  },
+  modalView: {
+    margin: 0,
+    backgroundColor: 'white',
+    borderRadius: 0,
+    marginTop: 20,
+    padding: 0,
+    flex: 1,
+  },
+  button: {
+    marginTop: 20,
+    marginLeft: 20,
+    width: 100,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
     textAlign: 'center',
   },
 });
