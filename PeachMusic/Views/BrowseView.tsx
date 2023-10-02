@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet, Modal, Alert, Pressable } from 'react-native';
 import { Song, Album } from './Song';
+import { AlbumDetailsView } from './AlbumView';
 
 export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
   const sortedDataByViews = [...data].sort((a, b) => {
@@ -105,7 +106,9 @@ const groupDataIntoRows = (data: any[], itemsPerRow: number) => {
   return groupedData;
 };
 
+const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
 const [modalVisible, setModalVisible] = useState(false);
+
 
 // Define how many items you want per row for the "New Music" section
 const itemsPerRowForNewMusic = 2; // You can adjust this as needed
@@ -124,13 +127,16 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
           {groupedYouNeedToHearSongs.map((row, index) => (
             <View key={index} style={{ flexDirection: 'column', width: 207}}>
               {row.map((item) => (
-                <TouchableOpacity style={{ margin: 10 }}
+                <TouchableOpacity
+                  style={{ margin: 10 }}
                   key={item.id}
                   onPress={() => {
                     if ('title' in item) {
                       console.log('Song selected:', item.title);
                     } else {
                       console.log('Album selected:', item.albumTitle);
+                      setModalVisible(true); // Open the modal
+                      setSelectedAlbum(item); // Set the selected album
                     }
                   }}
                 >
@@ -150,30 +156,16 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
-            transparent={true}
-            visible={modalVisible}>
+            visible={modalVisible}
+          >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>Go Back</Text>
-                </Pressable>
-                <FlatList
-                  data={sortedDataByloved}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                />
+
+                {/* Pass modalVisible as a prop to control visibility in AlbumDetailsView */}
+                {selectedAlbum && <AlbumDetailsView album={selectedAlbum} onClose={() => setModalVisible(false)} modalVisible={modalVisible} />}
               </View>
             </View>
           </Modal>
-          {/* <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}>
-            <Text style={styles.textStyle}>Show Modal</Text>
-          </Pressable> */}
         </View>
       </View>
       {/* Here's gonna music based on preference and stuff - Im putting Loved songs here for now */}
@@ -188,7 +180,9 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
         />
       </View>
       <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>New Music</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>
+          New Music
+        </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} pagingEnabled>
           {groupedNewMusic.map((row, index) => (
             <View key={index} style={{ flexDirection: 'column', width: 207 }}>
@@ -201,6 +195,8 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
                       console.log('Song selected:', item.title);
                     } else {
                       console.log('Album selected:', item.albumTitle);
+                      setModalVisible(true); // Open the modal
+                      setSelectedAlbum(item); // Set the selected album
                     }
                   }}
                 >
