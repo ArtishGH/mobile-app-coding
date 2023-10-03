@@ -188,7 +188,7 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
             <View key={index} style={{ flexDirection: 'column', width: 207 }}>
               {row.map((item) => (
                 <TouchableOpacity
-                  style={{ margin: 10 }}
+                  style={{ margin: 10}}
                   key={item.id}
                   onPress={() => {
                     if ('title' in item) {
@@ -303,31 +303,9 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: 'white',
     borderRadius: 0,
-    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 0,
     flex: 1,
-  },
-  button: {
-    marginTop: 20,
-    marginLeft: 20,
-    width: 100,
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
 });
