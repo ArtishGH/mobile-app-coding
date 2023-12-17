@@ -220,8 +220,12 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
                   onPress={() => {
                     if ('title' in item) {
                       console.log('Song selected:', item.title);
+                      setSongVisible(true); // Open the modal
+                      setSelectedSong(item); // Set the selected song
                     } else {
                       console.log('Album selected:', item.albumTitle);
+                      setAlbumVisible(true); // Open the modal
+                      setSelectedAlbum(item); // Set the selected album
                     }
                   }}
                 >
