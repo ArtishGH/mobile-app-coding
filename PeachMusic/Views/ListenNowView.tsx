@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Song, Album } from './Song';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Song, Album } from './Database';
 
-export const GalleryView = ({ data }: { data: (Song | Album)[]; }) => {
+export const ListenNowView = ({ data }: { data: (Song | Album)[]; }) => {
   const renderItem = ({ item }: { item: Song | Album; }) => {
     if ('title' in item) {
       // Render a song
@@ -56,37 +56,3 @@ export const GalleryView = ({ data }: { data: (Song | Album)[]; }) => {
     </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  itemImage: {
-    width: 60,
-    height: 60,
-    marginRight: 10,
-    borderRadius: 4,
-  },
-  itemInfo: {
-    flex: 1,
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  itemSubTitle: {
-    fontSize: 12,
-    color: 'gray',
-  },
-  noResultsText: {
-    fontSize: 18,
-    color: 'gray',
-    paddingTop: 10,
-    textAlign: 'center',
-  },
-});

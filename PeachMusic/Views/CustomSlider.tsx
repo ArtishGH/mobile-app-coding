@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, PanResponder, Text, StyleSheet } from 'react-native';
+import { View, PanResponder, StyleSheet } from 'react-native';
 
 interface CustomSliderProps {
   value: number;

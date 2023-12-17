@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text, ScrollView, useColorScheme } from 'react-native';
+import { View, Text, useColorScheme } from 'react-native';
 import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SearchView } from './Views/SearchView';
-import { GalleryView } from './Views/GalleryView';
-import { data } from './Views/Song';
+import { ListenNowView } from './Views/ListenNowView';
+import { data } from './Views/Database';
 import { LibraryView } from './Views/LibraryView';
 import { BrowseView } from './Views/BrowseView'
 
 function ListenNowScreen() {
-  return <GalleryView {...{data}} />;
+  return <ListenNowView {...{data}} />;
 }
 
 function BrowseScreen() {

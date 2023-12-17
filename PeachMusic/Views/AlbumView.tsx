@@ -1,50 +1,46 @@
 import React from 'react';
-import { View, Text, Image, Button, Modal, StyleSheet, ImageBackground } from 'react-native';
-import { Album } from './Song';
-import CustomSlider from './CustomSlider';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Album, Song, data } from './Database';
 
 interface AlbumDetailsViewProps {
-  album: Album | null;
-  onClose: () => void;
-  modalVisible: boolean;
+    album: Album;
+    onClose: () => void;
 }
 
-export const AlbumDetailsView: React.FC<AlbumDetailsViewProps> = ({ album, onClose, modalVisible }) => {
-  const [sliderValue, setSliderValue] = React.useState(0);
+export const AlbumDetailsView: React.FC<AlbumDetailsViewProps> = ({ album, onClose }) => {
+    // Filter songs connected to the album
+    const albumSongs = data.filter((item) => 'id' in item && album.songIds.includes(item.id)) as Song[];
 
-  return (
-    <ImageBackground source={{ uri: album?.albumImage }} style={{ width: 1000, height: 1000, borderRadius: 10 }} blurRadius={70}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-      >
-        <View style={styles.modalContainer}>
-          {album && (
-            <View>
-              <Image source={{ uri: album.albumImage }} style={{ width: 350, height: 350, marginHorizontal: 50, marginTop: 50, borderRadius: 10 }}/>
-              <Text style={{ marginHorizontal: 50, marginTop: 20, fontSize: 24 }}>{album.albumTitle}</Text>
-              <Text style={{ marginHorizontal: 50, marginTop: 5, fontSize: 20, color: 'gray' }}>{album.artist}</Text>
-              <CustomSlider
-                value={sliderValue}
-                onValueChange={(newValue) => setSliderValue(newValue)}
-              />
-              {/* Add more album details here */}
-              <View style={{ margin: 10 }}>
-                <Button title="Close" onPress={onClose} />
-              </View>
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+            {/* Album Cover, Title, and Artist */}
+            <View style={{ alignItems: 'center', marginTop: 20 }}>
+                <Image source={{ uri: album.albumImage }} style={{ width: 200, height: 200, borderRadius: 10 }} />
+                <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>{album.albumTitle}</Text>
+                <Text style={{ textAlign: 'center', color: 'gray' }}>{album.artist}</Text>
+                <Text style={{ textAlign: 'center', color: 'gray' }}>{album.date}</Text>
             </View>
-          )}
-        </View>
-      </Modal>
-    </ImageBackground>
-  );
-}
 
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+            {/* Songs List */}
+            <FlatList
+                data={albumSongs}
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', margin: 5 }} key={item.id}>
+                        <Image source={{ uri: item.image }} style={{ width: 60, height: 60, borderRadius: 5, marginRight: 10 }} />
+                        <View>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.title}</Text>
+                            <Text style={{ color: 'gray' }}>{item.artist}</Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+                keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
+            />
+
+            {/* Close Button */}
+            <TouchableOpacity style={{ margin: 10, backgroundColor: 'lightgray', padding: 10, borderRadius: 5 }} onPress={onClose}>
+                <Text style={{ textAlign: 'center' }}>Close</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};

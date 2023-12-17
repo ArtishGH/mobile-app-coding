@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
-import { Song, Album } from './Song';
+import { Song, Album } from './Database';
 
 export const LibraryView = ({ data }: { data: (Song | Album)[]; }) => {
   // Sort the data by views in descending order

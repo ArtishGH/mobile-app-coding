@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet, Modal, Alert, Pressable } from 'react-native';
-import { Song, Album } from './Song';
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet, Modal } from 'react-native';
+import { Song, Album } from './Database';
 import { AlbumDetailsView } from './AlbumView';
+import { SongDetailsView } from "./SongView";
 
 export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
   const sortedDataByViews = [...data].sort((a, b) => {
@@ -23,7 +24,7 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
     }
     return 0;
   });
-  const sortedDataByloved = [...data]
+  const sortedDataByLoved = [...data]
   .filter(item => 'loved' in item && item.loved)
   .sort((a, b) => {
     if ('loved' in a && 'loved' in b) {
@@ -32,11 +33,19 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
     return 0;
   });
 
-  const renderItem = ({ item }: { item: Song | Album }) => {
+  const renderOneLineItem = ({ item }: { item: Song | Album }) => {
     const handleModalPress = () => {
-      setModalVisible(!modalVisible);
+      if ('title' in item) {
+        console.log('Song selected:', item.title);
+        setSongVisible(true); // Open the modal
+        setSelectedSong(item); // Set the selected song
+      } else {
+        console.log('Album selected:', item.albumTitle);
+        setAlbumVisible(true); // Open the modal
+        setSelectedAlbum(item); // Set the selected album
+      }
     };
-    
+
     if ('title' in item) {
       // Render a song
       return (
@@ -49,36 +58,10 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
     } else {
       // Render an album
       return (
-        <TouchableOpacity style={{ margin: 10 }} onPress={() => console.log('Album selected:', item.albumTitle)}>
+        <TouchableOpacity style={{ margin: 10 }} onPress={handleModalPress}>
           <Image source={{ uri: item.albumImage }} style={{ width: 150, height: 150, borderRadius: 5 }} />
           <Text style={{ textAlign: 'left', marginTop: 5 }}>{item.albumTitle}</Text>
           <Text style={{ textAlign: 'left', color: 'gray' }}>{item.artist}</Text>
-        </TouchableOpacity>
-      );
-    }
-  };
-
-  const renderBestSongs = ({ item }: { item: Song | Album }) => {
-    if ('title' in item) {
-      // Render a song
-      return (
-        <TouchableOpacity style={styles.itemContainer} onPress={() => console.log('Song selected:', item.title)}>
-          <Image source={{ uri: item.image }} style={styles.itemImage} />
-          <View style={styles.itemInfo}>
-            <Text style={styles.itemTitle}>{item.title}</Text>
-            <Text style={styles.itemSubTitle}>{'Song • ' + item.artist}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-    } else {
-      // Render an album
-      return (
-        <TouchableOpacity style={styles.itemContainer} onPress={() => console.log('Album selected:', item.albumTitle)}>
-          <Image source={{ uri: item.albumImage }} style={styles.itemImage} />
-          <View style={styles.itemInfo}>
-            <Text style={styles.itemTitle}>{item.albumTitle}</Text>
-            <Text style={styles.itemSubTitle}><Text style={{ color: 'black' }}>{'Album • '}</Text>{item.artist}</Text>
-          </View>
         </TouchableOpacity>
       );
     }
@@ -97,24 +80,31 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
     groupedYouNeedToHearSongs.push(songs.slice(i, i + 2));
   }
 
+  const groupedAlbums = [];
+    for (let i = 0; i < albums.length; i += 2) {
+        groupedAlbums.push(albums.slice(i, i + 2));
+    }
+
   // Create a function to group data into rows, similar to groupedYouNeedToHearSongs
-const groupDataIntoRows = (data: any[], itemsPerRow: number) => {
-  const groupedData = [];
-  for (let i = 0; i < data.length; i += itemsPerRow) {
-    groupedData.push(data.slice(i, i + itemsPerRow));
-  }
-  return groupedData;
-};
+  const groupDataIntoRows = (data: any[], itemsPerRow: number) => {
+    const groupedData = [];
+    for (let i = 0; i < data.length; i += itemsPerRow) {
+      groupedData.push(data.slice(i, i + itemsPerRow));
+    }
+    return groupedData;
+  };
 
-const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
-const [modalVisible, setModalVisible] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [albumVisible, setAlbumVisible] = useState(false);
+    const [songVisible, setSongVisible] = useState(false);
 
 
-// Define how many items you want per row for the "New Music" section
-const itemsPerRowForNewMusic = 2; // You can adjust this as needed
+  // Define how many items you want per row for the "New Music" section
+  const itemsPerRowForNewMusic = 2; // You can adjust this as needed
 
-// Group the sortedDataByDate into rows for the "New Music" section
-const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMusic);
+  // Group the sortedDataByDate into rows for the "New Music" section
+  const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMusic);
 
 
   return (
@@ -128,14 +118,17 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
             <View key={index} style={{ flexDirection: 'column', width: 207}}>
               {row.map((item) => (
                 <TouchableOpacity
+
                   style={{ margin: 10 }}
                   key={item.id}
                   onPress={() => {
                     if ('title' in item) {
                       console.log('Song selected:', item.title);
+                      setSongVisible(true); // Open the modal
+                      setSelectedSong(item); // Set the selected song
                     } else {
                       console.log('Album selected:', item.albumTitle);
-                      setModalVisible(true); // Open the modal
+                      setAlbumVisible(true); // Open the modal
                       setSelectedAlbum(item); // Set the selected album
                     }
                   }}
@@ -153,27 +146,13 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
             </View>
           ))}
         </ScrollView>
-        <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            visible={modalVisible}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-
-                {/* Pass modalVisible as a prop to control visibility in AlbumDetailsView */}
-                {selectedAlbum && <AlbumDetailsView album={selectedAlbum} onClose={() => setModalVisible(false)} modalVisible={modalVisible} />}
-              </View>
-            </View>
-          </Modal>
-        </View>
       </View>
-      {/* Here's gonna music based on preference and stuff - Im putting Loved songs here for now */}
+      {/* Here's gonna music based on preference and stuff - I'm putting Loved songs here for now */}
       <View>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Loved By You</Text>
         <FlatList
-          data={sortedDataByloved}
-          renderItem={renderItem}
+          data={sortedDataByLoved}
+          renderItem={renderOneLineItem}
           keyExtractor={(item) => item.id}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -193,9 +172,11 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
                   onPress={() => {
                     if ('title' in item) {
                       console.log('Song selected:', item.title);
+                      setSongVisible(true); // Open the modal
+                      setSelectedSong(item); // Set the selected song
                     } else {
                       console.log('Album selected:', item.albumTitle);
-                      setModalVisible(true); // Open the modal
+                      setAlbumVisible(true); // Open the modal
                       setSelectedAlbum(item); // Set the selected album
                     }
                   }}
@@ -218,7 +199,7 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Daily Top 100s</Text>
         <FlatList
           data={sortedDataByViews}
-          renderItem={renderItem}
+          renderItem={renderOneLineItem}
           keyExtractor={(item) => item.id}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -257,6 +238,28 @@ const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMus
             </View>
           ))}
         </ScrollView>
+      </View>
+      <View style={styles.centeredView}>
+        <Modal animationType="slide" visible={albumVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              {selectedAlbum && (
+                  <AlbumDetailsView album={selectedAlbum} onClose={() => setAlbumVisible(false)}/>
+              )}
+            </View>
+          </View>
+        </Modal>
+      </View>
+      <View style={styles.centeredView}>
+        <Modal animationType="slide" visible={songVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              {selectedSong && (
+                  <SongDetailsView song={selectedSong} onClose={() => setSongVisible(false)} />
+              )}
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );

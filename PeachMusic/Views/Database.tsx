@@ -15,6 +15,7 @@ export interface Album {
   albumImage: string;
   artist: string;
   date: string;
+  songIds: string[];
 }
 
 export const data: (Song | Album)[] = [
@@ -35,13 +36,13 @@ export const data: (Song | Album)[] = [
   { id: '15', title: 'BUTTERFLY EFFECT', gen: 'Pop', artist: 'Travis Scott', date: '2020-09-30', loved: true, views: 37, image: 'https://townsquare.media/site/812/files/2018/07/travis-scott-astroworld-cover-art-full.jpg?w=1080&h=1080&q=75' },
   { id: '16', title: 'Save Your Tears', gen: 'Pop', artist: 'The Weeknd', date: '2021-07-24', loved: false, views: 77, image: 'https://upload.wikimedia.org/wikipedia/en/c/c1/The_Weeknd_-_After_Hours.png' },
   // Add more songs here
-  { id: '17', albumTitle: 'DAMN', artist: 'Kendrick Lamar', date: '2019-05-02', albumImage: 'https://e0.pxfuel.com/wallpapers/708/623/desktop-wallpaper-kendrick-lamar-damn-album-cover.jpg' },
-  { id: '18', albumTitle: 'A Life Of Pablo', artist: 'Kanye West', date: '2016-02-14', albumImage: 'https://www.levelman.com/content/images/size/w1000/2023/08/the-life-of-pablo-kanye-west-album-cover.jpg' },
-  { id: '19', albumTitle: 'Graduation', artist: 'Kanye West', date: '2007-09-11', albumImage: 'https://www.levelman.com/content/images/size/w1000/2023/08/graduation-kanye-west-album-cover.jpg' },
-  { id: '20', albumTitle: 'Blonde', artist: 'Frank Ocean', date: '2016-08-20', albumImage: 'https://jazzsoul.pl/images//2016/08/Frank-Ocean-Blonde-cover.jpg' },
-  { id: '21', albumTitle: 'Astroworld', artist: 'Travis Scott', date: '2018-08-03', albumImage: 'https://townsquare.media/site/812/files/2018/07/travis-scott-astroworld-cover-art-full.jpg?w=1080&h=1080&q=75' },
-  { id: '22', albumTitle: 'Take Care', artist: 'Drake', date: '2011-11-15', albumImage: 'https://upload.wikimedia.org/wikipedia/en/a/ae/Drake_-_Take_Care_cover.jpg' },
-  { id: '23', albumTitle: 'Rodeo', artist: 'Travis Scott', date: '2015-09-04', albumImage: 'https://lastfm.freetls.fastly.net/i/u/770x0/c7e53ead537dc20ad3915ee0f6332bfe.jpg#c7e53ead537dc20ad3915ee0f6332bfe' },
-  { id: '24', albumTitle: 'Scorpion', artist: 'Drake', date: '2018-06-29', albumImage: 'https://upload.wikimedia.org/wikipedia/en/9/90/Scorpion_by_Drake.jpg' },
+  { id: '17', albumTitle: 'DAMN', artist: 'Kendrick Lamar', date: '2019-05-02', albumImage: 'https://e0.pxfuel.com/wallpapers/708/623/desktop-wallpaper-kendrick-lamar-damn-album-cover.jpg', songIds: ['1', '2', '3'] },
+  { id: '18', albumTitle: 'A Life Of Pablo', artist: 'Kanye West', date: '2016-02-14', albumImage: 'https://www.levelman.com/content/images/size/w1000/2023/08/the-life-of-pablo-kanye-west-album-cover.jpg', songIds: ['4', '5', '6'] },
+  { id: '19', albumTitle: 'Graduation', artist: 'Kanye West', date: '2007-09-11', albumImage: 'https://www.levelman.com/content/images/size/w1000/2023/08/graduation-kanye-west-album-cover.jpg', songIds: ['7', '8', '9'] },
+  { id: '20', albumTitle: 'Blonde', artist: 'Frank Ocean', date: '2016-08-20', albumImage: 'https://best-fit.transforms.svdcdn.com/production/albums/frank-ocean-blond-compressed-0933daea-f052-40e5-85a4-35e07dac73df.jpg?w=469&h=469&q=100&auto=format&fit=crop&dm=1643652677&s=6ef41cb2628eb28d736e27b42635b66e', songIds: ['10', '11', '12'] },
+  { id: '21', albumTitle: 'Astroworld', artist: 'Travis Scott', date: '2018-08-03', albumImage: 'https://townsquare.media/site/812/files/2018/07/travis-scott-astroworld-cover-art-full.jpg?w=1080&h=1080&q=75', songIds: ['13', '14', '15'] },
+  { id: '22', albumTitle: 'Take Care', artist: 'Drake', date: '2011-11-15', albumImage: 'https://upload.wikimedia.org/wikipedia/en/a/ae/Drake_-_Take_Care_cover.jpg', songIds: ['16', '17', '18'] },
+  { id: '23', albumTitle: 'Rodeo', artist: 'Travis Scott', date: '2015-09-04', albumImage: 'https://lastfm.freetls.fastly.net/i/u/770x0/c7e53ead537dc20ad3915ee0f6332bfe.jpg#c7e53ead537dc20ad3915ee0f6332bfe', songIds: ['19', '20', '21'] },
+  { id: '24', albumTitle: 'Scorpion', artist: 'Drake', date: '2018-06-29', albumImage: 'https://upload.wikimedia.org/wikipedia/en/9/90/Scorpion_by_Drake.jpg', songIds: ['22', '23', '24'] },
   // Add more albums here
 ];
