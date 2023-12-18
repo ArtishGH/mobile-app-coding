@@ -255,7 +255,7 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
         </Modal>
       </View>
       <View style={styles.centeredView}>
-        <Modal animationType="slide" visible={songVisible}>
+        <Modal animationType="fade" visible={songVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               {selectedSong && (

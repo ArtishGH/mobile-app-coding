@@ -14,7 +14,7 @@ export const SongDetailsView: React.FC<SongDetailsViewProps> = ({ song, onClose 
     return (
         <ImageBackground source={{ uri: song?.image }} style={{ width: 1000, height: 1000, borderRadius: 10 }} blurRadius={70}>
             <Modal
-                animationType="fade"
+                animationType="slide"
                 transparent={true}
             >
                 <View style={styles.modalContainer}>
