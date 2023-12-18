@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, Button, Modal, StyleSheet, ImageBackground } from 'react-native';
-import { Song } from './Database';
+import { Song } from '../data/Database';
 import CustomSlider from './CustomSlider';
 
 interface SongDetailsViewProps {

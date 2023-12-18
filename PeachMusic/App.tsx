@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, useColorScheme } from 'react-native';
 import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SearchView } from './Views/SearchView';
-import { ListenNowView } from './Views/ListenNowView';
-import { data } from './Views/Database';
-import { LibraryView } from './Views/LibraryView';
-import { BrowseView } from './Views/BrowseView'
+import { SearchView } from './screens/SearchView';
+import { ListenNowView } from './screens/ListenNowView';
+import { data } from './data/Database';
+import { LibraryView } from './screens/LibraryView';
+import { BrowseView } from './screens/BrowseView'
 
 function ListenNowScreen() {
   return <ListenNowView {...{data}} />;

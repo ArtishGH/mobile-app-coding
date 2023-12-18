@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import { SearchBar } from '@rneui/themed';
-import { Song, Album, data } from './Database';
+import { Song, Album, data } from '../data/Database';
 
 export function SearchView() {
   const [searchQuery, setSearchQuery] = useState<string>('');

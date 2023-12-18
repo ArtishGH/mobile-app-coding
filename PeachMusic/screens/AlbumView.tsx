@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, FlatList, ImageBackground} from 'react-native';
-import { Album, Song, data } from './Database';
+import { Album, Song, data } from '../data/Database';
 
 interface AlbumDetailsViewProps {
     album: Album;

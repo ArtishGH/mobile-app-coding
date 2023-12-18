@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Song, Album } from './Database';
+import { Song, Album } from '../data/Database';
 
 export const ListenNowView = ({ data }: { data: (Song | Album)[]; }) => {
   const renderItem = ({ item }: { item: Song | Album; }) => {

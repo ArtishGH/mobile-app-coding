@@ -1,37 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, ScrollView, StyleSheet, Modal } from 'react-native';
-import { Song, Album } from './Database';
+import { Song, Album } from '../data/Database';
 import { AlbumDetailsView } from './AlbumView';
 import { SongDetailsView } from "./SongView";
+import { sortDataByViews, sortDataByDate, sortDataByLoved } from '../components/sorting';
 
 export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
-  const sortedDataByViews = [...data].sort((a, b) => {
-    if ('views' in a && 'views' in b) {
-      return b.views - a.views;
-    }
-    return 0;
-  });
-  const sortedDataByDate = [...data].sort((a, b) => {
-    if ('date' in a && 'date' in b) {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      if (dateA > dateB) {
-        return -1;
-      } else if (dateA < dateB) {
-        return 1;
-      }
-      return 0;
-    }
-    return 0;
-  });
-  const sortedDataByLoved = [...data]
-  .filter(item => 'loved' in item && item.loved)
-  .sort((a, b) => {
-    if ('loved' in a && 'loved' in b) {
-      return a.loved === b.loved ? 0 : a.loved ? -1 : 1;
-    }
-    return 0;
-  });
+  const sortedDataByViews = sortDataByViews(data);
+  const sortedDataByDate = sortDataByDate(data);
+  const sortedDataByLoved = sortDataByLoved(data);
 
   const renderOneLineItem = ({ item }: { item: Song | Album }) => {
     const handleModalPress = () => {
@@ -255,7 +232,7 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
         </Modal>
       </View>
       <View style={styles.centeredView}>
-        <Modal animationType="fade" visible={songVisible}>
+        <Modal animationType="slide" visible={songVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               {selectedSong && (
