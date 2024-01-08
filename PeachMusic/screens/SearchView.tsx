@@ -19,7 +19,7 @@ export function SearchView() {
     setSearchQuery('');
     setSearchedData([]); // Clear the search results
     Keyboard.dismiss(); // Dismiss the keyboard
-  };
+  }; 
 
   const renderSearchedItem = ({ item }: { item: Song | Album; }) => {
     if ('title' in item) {

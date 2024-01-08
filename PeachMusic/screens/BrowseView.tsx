@@ -6,10 +6,22 @@ import { SongDetailsView } from "./SongView";
 import { sortDataByViews, sortDataByDate, sortDataByLoved } from '../components/sorting';
 
 export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
+  // Sort the data
   const sortedDataByViews = sortDataByViews(data);
   const sortedDataByDate = sortDataByDate(data);
   const sortedDataByLoved = sortDataByLoved(data);
 
+  // Grouping the data into albums and songs
+  const albums = data.filter(item => 'albumTitle' in item);
+
+  const songs = data.filter(item => 'title' in item);
+  // Modal stuff
+  const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [albumVisible, setAlbumVisible] = useState(false);
+  const [songVisible, setSongVisible] = useState(false);
+
+  // Render a song or album
   const renderOneLineItem = ({ item }: { item: Song | Album }) => {
     const handleModalPress = () => {
       if ('title' in item) {
@@ -20,9 +32,9 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
         console.log('Album selected:', item.albumTitle);
         setAlbumVisible(true); // Open the modal
         setSelectedAlbum(item); // Set the selected album
+
       }
     };
-
     if ('title' in item) {
       // Render a song
       return (
@@ -44,43 +56,33 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
     }
   };
 
-  const albums = data.filter(item => 'albumTitle' in item);
-  const songs = data.filter(item => 'title' in item);
 
+  // Grouping the data into rows
   const groupedBestSongs = [];
   for (let i = 0; i < songs.length; i += 4) {
     groupedBestSongs.push(songs.slice(i, i + 4));
-  }
 
+  }
   const groupedYouNeedToHearSongs = [];
   for (let i = 0; i < songs.length; i += 2) {
     groupedYouNeedToHearSongs.push(songs.slice(i, i + 2));
+
   }
-
   const groupedAlbums = [];
-    for (let i = 0; i < albums.length; i += 2) {
-        groupedAlbums.push(albums.slice(i, i + 2));
-    }
+  for (let i = 0; i < albums.length; i += 2) {
+      groupedAlbums.push(albums.slice(i, i + 2));
 
-  // Create a function to group data into rows, similar to groupedYouNeedToHearSongs
+    }
   const groupDataIntoRows = (data: any[], itemsPerRow: number) => {
     const groupedData = [];
     for (let i = 0; i < data.length; i += itemsPerRow) {
       groupedData.push(data.slice(i, i + itemsPerRow));
     }
     return groupedData;
+
   };
-
-  const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
-  const [albumVisible, setAlbumVisible] = useState(false);
-    const [songVisible, setSongVisible] = useState(false);
-
-
-  // Define how many items you want per row for the "New Music" section
   const itemsPerRowForNewMusic = 2; // You can adjust this as needed
 
-  // Group the sortedDataByDate into rows for the "New Music" section
   const groupedNewMusic = groupDataIntoRows(sortedDataByDate, itemsPerRowForNewMusic);
 
 
@@ -124,7 +126,7 @@ export const BrowseView = ({ data }: { data: (Song | Album)[] }) => {
           ))}
         </ScrollView>
       </View>
-      {/* Here's gonna music based on preference and stuff - I'm putting Loved songs here for now */}
+      {/* Here's gonna be music based on preference and stuff - I'm putting Loved songs here for now */}
       <View>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginTop: 10 }}>Loved By You</Text>
         <FlatList
